@@ -36,7 +36,7 @@ function displayDir(agent, location) {
 
 async function main() {
   if (process.argv.includes('--version') || process.argv.includes('-v')) {
-    console.log('antislop 3.2.10')
+    console.log('antislop 3.2.11')
     return
   }
 

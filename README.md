@@ -147,7 +147,7 @@ The Gemini CLI row is legacy support: Antigravity replaced it, but the installer
 
 Antigravity and Copilot share one folder. Copilot also reads `.github/skills/` and `.claude/skills/`, but the installer writes the folder they have in common, so picking both installs antislop once.
 
-Those are the project paths. A global install writes the same folder under your home directory, with two exceptions: OpenCode writes to `~/.config/opencode/skills/`, and Antigravity to `~/.gemini/config/skills/`. Copilot is the one agent that also reads the home-level `.agents/skills/`.
+Those are the project paths. A global install writes the same folder under your home directory, with three exceptions: OpenCode writes to `~/.config/opencode/skills/`, Antigravity to `~/.gemini/config/skills/`, and Codex to `~/.agents/skills/`, the user-level folder Codex documents in place of its own `~/.codex/skills/`. Copilot and OpenCode read that home-level folder too.
 
 Hermes needs one extra step after a project install: it will not load skills out of a cloned repository until you run `hermes skills trust` once in that project.
 
@@ -189,14 +189,12 @@ antislop is used one of two ways, chosen at the start of a session:
 
 ## Roadmap
 
-**v3.2.10** is the current release.
+**v3.2.11** is the current release.
 
-- **GitHub Copilot is an installer target.** It loads skills from `.github/skills`, `.claude/skills`, or `.agents/skills`, so it shares the `.agents/skills` folder other agents already use and reads the same `AGENTS.md` pointer. No new folder, no new file. GitHub's skill support is young, so treat this door as early.
-- **The installer stops writing the same skills twice.** Agents that share a folder now share one install instead of one each, and the conflict prompt counts folders rather than agents, so it stops reporting more folders than exist.
-- **OpenCode gets told about a collision.** OpenCode reads `.opencode/skills`, `.claude/skills`, and `.agents/skills` at once and documents no precedence between them. When two of those hold antislop, the installer now names both instead of leaving you to find a missing skill later.
-- **Claude Code and `AGENTS.md`.** Since v2.1.277 Claude Code reads `AGENTS.md` when a project has no `CLAUDE.md`. antislop keeps writing `CLAUDE.md`, because a `CLAUDE.md` anywhere above the working directory makes Claude ignore `AGENTS.md` entirely.
-- **Copilot has no plugin door.** The roadmap promised a marketplace command; there is none to ship, because Copilot Extensions in the GitHub Marketplace are applications rather than repo manifests.
-- **R-02 stops contradicting itself.** The core called the em dash ban absolute, while `antislop-copywriting` excepted a user's own voice in three places, so the most recognisable AI tell could survive the filter. R-02 now scopes the ban to text the agent writes, and a user's sample goes through R-37 instead: name it, ask, never decide silently.
+- **A global Codex install moves to the folder Codex documents.** It wrote `~/.codex/skills`, which Codex's own source calls its deprecated user location, and now writes `$HOME/.agents/skills`. The old path still loads, so an existing install keeps working.
+- **Codex learns about the shared-folder collision.** Codex walks `.agents/skills` up from the working directory, so installing Codex and Copilot into one project leaves two copies of the same skill names. The installer now names that, where it used to stay silent.
+- **The shared-folder claim is corrected.** This page said Copilot was the one agent that reads the home-level `.agents/skills/`. Codex reads it at user scope and OpenCode lists it beside its own global folder, so it is three agents, and README, GUIDE and ROADMAP now say which agents do.
+- **A star history chart** sits between the FAQ and the contributors.
 
 Every earlier release, and what comes next, is in [ROADMAP.md](ROADMAP.md).
 
@@ -219,6 +217,10 @@ The packaged skills use the open Agent Skills standard (folder per skill), so th
 ### What is a "skill"?
 
 A folder that goes deeper into one concern (UI, copywriting, accessibility, and so on), holding a `SKILL.md` with its rules. It references the core rules by number and never duplicates them, so adding a skill does not change the core.
+
+## Star History
+
+[![Star History Chart](https://star-history.dera.page/svg?repos=miqdadbadjuber/anti-slop)](https://star-history.dera.page/miqdadbadjuber/anti-slop)
 
 ## Contributors
 
